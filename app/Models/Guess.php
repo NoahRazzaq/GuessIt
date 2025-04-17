@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Guess extends Model
 {
 
+    use \Illuminate\Database\Eloquent\Factories\HasFactory;
+
+
     protected $fillable = [
         'user_id',
         'object_id',

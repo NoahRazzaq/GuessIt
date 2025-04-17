@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Objects extends Model
 {
 
+    use \Illuminate\Database\Eloquent\Factories\HasFactory;
+
+
     protected $fillable = [
         'name',
         'description',
