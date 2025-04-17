@@ -1,44 +1,20 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
-Route::get('/upload-test', function () {
-    return '
-        <form method="POST" action="/upload-test" enctype="multipart/form-data">
-            '.csrf_field().'
-            <input type="file" name="image" />
-            <button type="submit">Uploader</button>
-        </form>
-    ';
+Route::get('/', function () {
+    return view('welcome');
 });
 
-Route::post('/upload-test', function (Request $request) {
-    if (!$request->hasFile('image')) {
-        return 'Aucun fichier reçu.';
-    }
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-    $file = $request->file('image');
-
-    if (!$file->isValid()) {
-        return 'Le fichier n\'est pas valide.';
-    }
-
-    $path = $file->store('test', 's3');
-
-    if (!$path) {
-        return 'Échec de l\'upload.';
-    }
-
-    Storage::disk('s3')->setVisibility($path, 'public');
-
-    $url = Storage::disk('s3')->url($path);
-    return "
-    Image uploadée ! <br>
-    <a href='$url' target='_blank'>$url</a><br>
-    <img src='$url' alt='Image S3' style='max-width:300px;' />
-";
-
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+require __DIR__.'/auth.php';
