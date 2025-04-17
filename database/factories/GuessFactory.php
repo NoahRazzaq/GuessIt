@@ -23,7 +23,7 @@ class GuessFactory extends Factory
     {
         return [
             'user_id' => \App\Models\User::inRandomOrder()->first()->id ?? \App\Models\User::factory(),
-            'object_id' => \App\Models\Objects::inRandomOrder()->first()->id ?? \App\Models\Objects::factory(),
+            'object_id' => \App\Models\GameObject::inRandomOrder()->first()->id ?? \App\Models\GameObject::factory(),
             'guessed_price' => $this->faker->randomFloat(2, 10, 500),
             'score' => $this->faker->numberBetween(0, 3),
             'time_taken' => $this->faker->numberBetween(5, 60),

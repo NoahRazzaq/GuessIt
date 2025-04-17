@@ -30,6 +30,6 @@ class Guess extends Model
 
     public function object(): BelongsTo
     {
-        return $this->belongsTo(Objects::class);
+        return $this->belongsTo(GameObject::class);
     }
 }
