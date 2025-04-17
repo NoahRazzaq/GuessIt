@@ -31,6 +31,8 @@ Route::post('/upload-test', function (Request $request) {
         return 'Échec de l\'upload.';
     }
 
+    Storage::disk('s3')->setVisibility($path, 'public');
+
     $url = Storage::disk('s3')->url($path);
     return "Image uploadée ! <br><a href='$url' target='_blank'>$url</a>";
 });
