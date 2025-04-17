@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 
-class Objects extends Model
+class GameObject extends Model
 {
+
+    protected $table = 'objects';
 
     use \Illuminate\Database\Eloquent\Factories\HasFactory;
 

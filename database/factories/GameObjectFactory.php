@@ -2,15 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Models\Objects;
+use App\Models\GameObject;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Object>
  */
-class ObjectsFactory extends Factory
+class GameObjectFactory extends Factory
 {
-    protected $model = Objects::class;
+    protected $model = GameObject::class;
 
     /**
      * Define the model's default state.
@@ -23,7 +23,7 @@ class ObjectsFactory extends Factory
             'name' => $this->faker->words(2, true),
             'description' => $this->faker->sentence(),
             'image_path' => $this->faker->imageUrl(640, 480, 'products'),
-            'real_price' => $this->faker->randomFloat(2, 10, 500),
+            'real_price' => $this->faker->numberBetween(5,10),
             'category_id' => \App\Models\Category::inRandomOrder()->first()->id ?? \App\Models\Category::factory(),
         ];
     }

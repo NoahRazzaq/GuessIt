@@ -14,6 +14,6 @@ class Category extends Model
     ];
     public function objects(): HasMany
     {
-        return $this->hasMany(Objects::class);
+        return $this->hasMany(GameObject::class);
     }
 }
