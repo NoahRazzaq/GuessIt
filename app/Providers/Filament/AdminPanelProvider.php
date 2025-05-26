@@ -17,6 +17,11 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Form;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -55,4 +60,35 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ]);
     }
+
+
+    public static function form(Form $form): Form
+{
+    return $form->schema([
+        TextInput::make('name')
+            ->label('Nom')
+            ->required(),
+
+        Textarea::make('description')
+            ->label('Description'),
+
+        FileUpload::make('image_path')
+            ->label('Image')
+            ->disk('s3') // ou 'minio' si tu l’as nommé comme ça
+            ->directory('objects')
+            ->image()
+            ->preserveFilenames()
+            ->required(),
+
+        TextInput::make('real_price')
+            ->label('Prix réel')
+            ->numeric()
+            ->required(),
+
+        Select::make('category_id')
+            ->label('Catégorie')
+            ->relationship('category', 'name')
+            ->required(),
+    ]);
+}
 }
