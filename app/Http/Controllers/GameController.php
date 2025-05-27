@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\GameObject;
 use App\Models\Guess;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class GameController extends Controller
 {
-    // Affiche un objet mystère à deviner
     public function show()
     {
         $object = GameObject::inRandomOrder()->first();
@@ -17,7 +17,14 @@ class GameController extends Controller
         return view('game.play', compact('object'));
     }
 
-    // Traite la devinette de l'utilisateur
+    public function index()
+{
+    $objects = GameObject::latest()->paginate(12); // ou ->get() si tu veux tout
+
+    return view('game.index', compact('objects'));
+}
+
+
     public function submit(Request $request)
     {
         $request->validate([
@@ -38,7 +45,7 @@ class GameController extends Controller
 
         if ($diff <= ($actual * 0.05)) {
             $score = 3;
-            $feedback = 'Incroyable ! Tu es ultra proche !';
+            $feedback = 'Incroyable ! Tu as deviné le prix!';
         } elseif ($diff <= ($actual * 0.10)) {
             $score = 2;
             $feedback = 'Super ! Tu t’en sors bien.';
@@ -47,8 +54,7 @@ class GameController extends Controller
             $feedback = 'Pas mal, tu chauffes.';
         }
 
-        // Sauvegarde de la tentative
-        // Création de la devinette
+       
         Guess::create([
             'user_id' => Auth::id(),
             'object_id' => $object->id,
@@ -61,8 +67,7 @@ class GameController extends Controller
 
         $user = Auth::user();
         $user->total_score += $score;
-        $user->save(); // Sauvegarde manuelle du score total
-
+        $user->save(); 
 
         return view('game.result', [
             'object' => $object,
@@ -71,5 +76,11 @@ class GameController extends Controller
             'score' => $score,
             'feedback' => $feedback,
         ]);
+
+        
     }
+
+
+
+
 }

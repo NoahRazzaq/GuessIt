@@ -62,33 +62,5 @@ class AdminPanelProvider extends PanelProvider
     }
 
 
-    public static function form(Form $form): Form
-{
-    return $form->schema([
-        TextInput::make('name')
-            ->label('Nom')
-            ->required(),
 
-        Textarea::make('description')
-            ->label('Description'),
-
-        FileUpload::make('image_path')
-            ->label('Image')
-            ->disk('s3') // ou 'minio' si tu l’as nommé comme ça
-            ->directory('objects')
-            ->image()
-            ->preserveFilenames()
-            ->required(),
-
-        TextInput::make('real_price')
-            ->label('Prix réel')
-            ->numeric()
-            ->required(),
-
-        Select::make('category_id')
-            ->label('Catégorie')
-            ->relationship('category', 'name')
-            ->required(),
-    ]);
-}
 }

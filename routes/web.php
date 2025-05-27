@@ -9,7 +9,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
+Route::get('/', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -20,6 +20,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/play', [GameController::class, 'show'])->name('play');
     Route::post('/play', [GameController::class, 'submit'])->name('play.submit'); 
+    Route::get('/game-object', [GameController::class, 'showGameObject'])->name('game.object');
+Route::post('/game-object', [GameController::class, 'storeGameObject'])->name('game.add');
+
 
   Route::get('/mes-points', [ScoreController::class, 'show'])->name('score');
 });

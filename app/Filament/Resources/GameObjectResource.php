@@ -16,6 +16,9 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\FileUpload;
+use Illuminate\Support\Facades\Storage;
 
 class GameObjectResource extends Resource
 {
@@ -36,8 +39,13 @@ class GameObjectResource extends Resource
             Textarea::make('description')
                 ->label('Description'),
 
-            Textarea::make('image_path')
-                ->label('Image'),
+            FileUpload::make('image_path')
+                ->required()
+                ->maxFiles(1)
+                ->disk('s3')
+                ->directory('handbooks')
+                ->visibility('publico')
+                ->placeholder('Upload File'),
 
             TextInput::make('real_price')
                 ->label('Prix réel')
@@ -55,8 +63,12 @@ class GameObjectResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('image_path')
-                    ->label('Image'),
+                ImageColumn::make('image_path')
+                    ->label('Image')
+                    ->disk('s3')
+                    ->height(60)
+                    ->square(),
+
 
                 TextColumn::make('name')->label('Nom')->sortable()->searchable(),
                 TextColumn::make('real_price')->label('Prix réel')->sortable(),
